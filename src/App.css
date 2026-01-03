@@ -1,42 +1,225 @@
-.App {
-  text-align: center;
+html {
+  scroll-behavior: smooth;
 }
 
-.App-logo {
-  height: 40vmin;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  background: #000;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.app-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Video Section - Fixed in viewport */
+.video-section {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+
+.earth-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: auto;
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #87ceeb 0%, #e0f6ff 100%);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Clouds Section */
+.clouds-section {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.clouds-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.cloud {
+  position: absolute;
+  width: 180px;
+  height: auto;
+  pointer-events: none;
+  will-change: transform, opacity;
+  transition: none;
+}
+
+/* Cloud Text */
+.cloud-text-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.cloud-text {
+  font-size: 4rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(135, 206, 235, 0.5),
+    0 0 40px rgba(135, 206, 235, 0.3);
+  margin-bottom: 1rem;
+  animation: floatText 3s ease-in-out infinite;
+}
+
+.cloud-text-small {
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: #ffffff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3), 0 0 15px rgba(135, 206, 235, 0.4);
+  animation: floatText 4s ease-in-out infinite;
+}
+
+@keyframes floatText {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Scroll Indicator */
+.time-display {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.scroll-indicator {
+  position: fixed;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  gap: 1rem;
+  z-index: 1000;
+}
+
+.scroll-progress {
+  width: 4px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+.scroll-bar {
+  width: 100%;
+  background: linear-gradient(to bottom, #87ceeb, #4a90e2);
+  position: absolute;
+  bottom: 0;
+  transition: height 0.1s ease-out;
+  box-shadow: 0 0 10px rgba(135, 206, 235, 0.5);
+}
+
+.scroll-text {
   color: white;
+  font-size: 0.75rem;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 2px;
+  opacity: 0.8;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  animation: fadeInOut 2s ease-in-out infinite;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+@keyframes fadeInOut {
+  0%,
+  100% {
+    opacity: 0.8;
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    opacity: 0.4;
   }
 }
 
-button {
-  font-size: calc(10px + 2vmin);
+/* Scroll Spacer - Creates scrollable area */
+.scroll-spacer {
+  height: 400vh;
+  width: 1px;
+  position: relative;
+  z-index: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cloud-text {
+    font-size: 2.5rem;
+  }
+
+  .cloud-text-small {
+    font-size: 1.3rem;
+  }
+
+  .cloud {
+    width: 150px;
+  }
+
+  .scroll-indicator {
+    right: 15px;
+  }
+
+  .scroll-progress {
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cloud-text {
+    font-size: 2rem;
+  }
+
+  .cloud-text-small {
+    font-size: 1rem;
+  }
+
+  .cloud {
+    width: 120px;
+  }
 }
