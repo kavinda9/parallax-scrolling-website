@@ -6,9 +6,12 @@
   width: 100vw;
   height: 100vh;
   z-index: 1;
-  transition: opacity 0.3s ease;
+  transition: none;
   pointer-events: none;
   overflow: hidden;
+  contain: layout style paint;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* Fixed cyan background */
@@ -22,34 +25,72 @@
   z-index: 1;
 }
 
-/* Tower container - scrolls vertically */
+/* Building layers */
+.building-layer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  will-change: transform, opacity;
+  transition: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.building-1 {
+  z-index: 2; /* Farthest back */
+}
+
+.building-2 {
+  z-index: 3; /* Middle */
+}
+
+.building-3 {
+  z-index: 4; /* Closest to tower */
+}
+
+.building-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom;
+  display: block;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Tower container - bottom aligned */
 .lotus-tower-container {
   position: absolute;
-  top: 0; /* Start from top so top of tower is visible first */
+  bottom: 0; /* Align to bottom like buildings */
   left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  transition: none; /* Remove transition for smoother scroll-linked movement */
-  will-change: transform;
+  transform: translateX(-50%) translateZ(0);
+  z-index: 5; /* Above all buildings */
+  will-change: height;
+  transition: none;
+  overflow: hidden; /* Hide overflow to show only visible part */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* Lotus tower image */
 .lotus-tower {
   display: block;
-  height: 200vh; /* Very tall - 2x screen height */
   width: auto;
   object-fit: contain;
+  transition: none;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .lotus-tower {
-    height: 180vh;
+    max-width: 90vw;
   }
 }
 
 @media (max-width: 480px) {
   .lotus-tower {
-    height: 150vh;
+    max-width: 85vw;
   }
 }

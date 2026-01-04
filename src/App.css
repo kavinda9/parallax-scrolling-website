@@ -1,5 +1,5 @@
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto; /* Disable smooth scroll - causes jank */
 }
 
 * {
@@ -13,6 +13,8 @@ body {
   background: #000;
   overflow-x: hidden;
   overflow-y: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .app-container {
@@ -22,7 +24,7 @@ body {
 
 /* Scroll Spacer - Creates scrollable area */
 .scroll-spacer {
-  height: 1200vh; /* Increased to allow full lotus tower scroll + reveal bottom half */
+  height: 800vh; /* Increased from 400vh to allow more scrolling */
   width: 1px;
   position: relative;
   z-index: 0;

@@ -6,11 +6,14 @@
   width: 100vw;
   height: 100vh;
   z-index: 0; /* keep video behind overlays */
+  contain: layout style paint; /* Improve performance */
 }
 
 .earth-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  will-change: auto;
+  will-change: opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
