@@ -5,31 +5,51 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1; /* above video, below clouds */
-  transition: opacity 0.5s ease;
-  pointer-events: none; /* Allow scroll to pass through */
+  z-index: 1;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  overflow: hidden;
 }
 
+/* Fixed cyan background */
 .lotus-background {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background: linear-gradient(to bottom, #00ced1 0%, #48d1cc 50%, #40e0d0 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none; /* Allow scroll to pass through */
+  z-index: 1;
 }
 
-.lotus-title {
-  font-size: 3rem;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  margin-bottom: 1rem;
+/* Tower container - scrolls vertically */
+.lotus-tower-container {
+  position: absolute;
+  top: 0; /* Start from top so top of tower is visible first */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  transition: none; /* Remove transition for smoother scroll-linked movement */
+  will-change: transform;
 }
 
-.lotus-subtitle {
-  font-size: 1.5rem;
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+/* Lotus tower image */
+.lotus-tower {
+  display: block;
+  height: 200vh; /* Very tall - 2x screen height */
+  width: auto;
+  object-fit: contain;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .lotus-tower {
+    height: 180vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .lotus-tower {
+    height: 150vh;
+  }
 }
