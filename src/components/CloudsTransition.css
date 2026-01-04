@@ -52,15 +52,45 @@
   }
 }
 
+/* Cloud Text Overlay */
+.cloud-text-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Georgia", "Garamond", serif;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #000;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.8),
+    0 0 20px rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+.cloud-text-overlay span {
+  display: block;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .cloud-text {
     font-size: 2.5rem;
+  }
+
+  .cloud-text-overlay {
+    font-size: 2rem;
   }
 }
 
 @media (max-width: 480px) {
   .cloud-text {
     font-size: 2rem;
+  }
+
+  .cloud-text-overlay {
+    font-size: 1.5rem;
   }
 }

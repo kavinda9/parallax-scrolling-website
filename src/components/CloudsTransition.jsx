@@ -25,15 +25,7 @@ function CloudsTransition({ videoTime }) {
       anchor: "top-right",
       maxGrowth: 3,
     },
-    {
-      id: 3,
-      image: cloud3,
-      spawnTime: 5.4,
-      x: 0,
-      y: 100,
-      anchor: "bottom-left",
-      maxGrowth: 3,
-    },
+
     {
       id: 4,
       image: cloud1,
@@ -53,16 +45,6 @@ function CloudsTransition({ videoTime }) {
       maxGrowth: 3,
     },
 
-    // Next 3 clouds at 6.5s - around center (grow 2x)
-    {
-      id: 6,
-      image: cloud3,
-      spawnTime: 6.5,
-      x: 50,
-      y: 20,
-      anchor: "center",
-      maxGrowth: 2,
-    },
     {
       id: 7,
       image: cloud1,
@@ -134,12 +116,10 @@ function CloudsTransition({ videoTime }) {
         if (opacity <= 0) return null;
 
         return (
-          <img
+          <div
             key={cloud.id}
-            src={cloud.image}
-            alt="cloud"
-            className="cloud-full"
             style={{
+              position: "absolute",
               left: `${cloud.x}%`,
               top: `${cloud.y}%`,
               transform: `${getTransform(
@@ -147,8 +127,25 @@ function CloudsTransition({ videoTime }) {
                 currentScale
               )} translateY(${translateY}vh)`,
               opacity: opacity,
+              pointerEvents: "none",
             }}
-          />
+          >
+            <img
+              src={cloud.image}
+              alt="cloud"
+              className="cloud-full"
+              style={{
+                position: "relative",
+                display: "block",
+              }}
+            />
+            {(cloud.id === 7 || cloud.id === 8) && (
+              <div className="cloud-text-overlay">
+                {cloud.id === 7 && <span>Welcome To</span>}
+                {cloud.id === 8 && <span>Sri Lanka</span>}
+              </div>
+            )}
+          </div>
         );
       })}
     </div>
