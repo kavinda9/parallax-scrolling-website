@@ -1,0 +1,35 @@
+/* Lotus Tower Section */
+.lotus-section {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1; /* above video, below clouds */
+  transition: opacity 0.5s ease;
+  pointer-events: none; /* Allow scroll to pass through */
+}
+
+.lotus-background {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #00ced1 0%, #48d1cc 50%, #40e0d0 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* Allow scroll to pass through */
+}
+
+.lotus-title {
+  font-size: 3rem;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  margin-bottom: 1rem;
+}
+
+.lotus-subtitle {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}

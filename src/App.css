@@ -1,42 +1,30 @@
-html {
-  scroll-behavior: smooth;
-}
-
-* {
+html,
+body,
+#root {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: "Arial", sans-serif;
-  background: #000;
+  width: 100%;
+  min-height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
+  background: #000;
 }
 
 .app-container {
   position: relative;
   width: 100%;
+  min-height: 100vh;
 }
 
-/* Debug Info */
-.debug-info {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  color: white;
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
-/* Scroll Spacer - Creates scrollable area */
+/* Spacer to allow scrolling that drives the video time */
 .scroll-spacer {
   height: 400vh;
-  width: 1px;
+  width: 100%;
+  display: block;
+}
+
+/* Optional utility if other elements need stacking */
+.layer-top {
   position: relative;
-  z-index: 0;
+  z-index: 10;
 }

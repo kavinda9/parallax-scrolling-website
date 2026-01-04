@@ -1,6 +1,7 @@
 import { useState } from "react";
 import VideoSection from "./components/VideoSection";
 import CloudsTransition from "./components/CloudsTransition";
+import LotusSection from "./components/LotusSection";
 import "./App.css";
 
 function App() {
@@ -14,8 +15,8 @@ function App() {
       {/* Clouds Transition */}
       <CloudsTransition videoTime={videoTime} />
 
-      {/* Debug info */}
-      <div className="debug-info">Time: {videoTime.toFixed(1)}s</div>
+      {/* Lotus Tower Section */}
+      <LotusSection videoTime={videoTime} />
 
       {/* Scroll spacer */}
       <div className="scroll-spacer" />

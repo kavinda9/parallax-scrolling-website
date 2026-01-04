@@ -119,12 +119,15 @@ function CloudsTransition({ videoTime }) {
 
         // Fade in opacity
         let opacity = Math.min(cloudAge / 0.5, 1);
+        let translateY = 0;
 
-        // Fade out when reaching disappear time
+        // Move up and fade out when reaching disappear time
         if (videoTime >= cloudDisappearTime) {
           const fadeProgress =
             (videoTime - cloudDisappearTime) / disappearDuration;
           opacity = Math.max(1 - fadeProgress, 0);
+          // Move clouds upward (negative Y)
+          translateY = -fadeProgress * 100; // Move 100vh up
         }
 
         // Don't render if fully faded out
@@ -139,31 +142,15 @@ function CloudsTransition({ videoTime }) {
             style={{
               left: `${cloud.x}%`,
               top: `${cloud.y}%`,
-              transform: getTransform(cloud.anchor, currentScale),
+              transform: `${getTransform(
+                cloud.anchor,
+                currentScale
+              )} translateY(${translateY}vh)`,
               opacity: opacity,
             }}
           />
         );
       })}
-
-      {/* Text appears at 6.5s and disappears with clouds */}
-      {videoTime >= 6.5 &&
-        videoTime < cloudDisappearTime + disappearDuration && (
-          <div
-            className="cloud-text-container"
-            style={{
-              opacity:
-                videoTime < cloudDisappearTime
-                  ? Math.min((videoTime - 6.5) / 0.5, 1)
-                  : Math.max(
-                      1 - (videoTime - cloudDisappearTime) / disappearDuration,
-                      0
-                    ),
-            }}
-          >
-            <h1 className="cloud-text">Welcome to Sri Lanka</h1>
-          </div>
-        )}
     </div>
   );
 }
