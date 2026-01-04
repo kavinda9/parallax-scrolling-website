@@ -8,98 +8,102 @@ import "./App.css";
 function App() {
   const videoRef = useRef();
   const [videoTime, setVideoTime] = useState(0);
+  const lastVideoUpdateRef = useRef(0);
 
-  // 10 clouds with specific spawn times
-  const [clouds] = useState(() => {
-    const cloudImages = [cloud1, cloud2, cloud3];
-    return [
-      // First 5 clouds appear at 6s
-      {
-        id: 1,
-        image: cloudImages[0],
-        spawnTime: 6.0,
-        x: 30,
-        y: 40,
-        scale: 0.5,
-      },
-      {
-        id: 2,
-        image: cloudImages[1],
-        spawnTime: 6.0,
-        x: 70,
-        y: 35,
-        scale: 0.6,
-      },
-      {
-        id: 3,
-        image: cloudImages[2],
-        spawnTime: 6.0,
-        x: 50,
-        y: 60,
-        scale: 0.4,
-      },
-      {
-        id: 4,
-        image: cloudImages[0],
-        spawnTime: 6.0,
-        x: 20,
-        y: 70,
-        scale: 0.55,
-      },
-      {
-        id: 5,
-        image: cloudImages[1],
-        spawnTime: 6.0,
-        x: 80,
-        y: 65,
-        scale: 0.45,
-      },
+  // Cloud configuration
+  const clouds = [
+    // First 5 clouds at 5.4s - 4 corners + center (grow 3x, corners move towards middle)
+    {
+      id: 1,
+      image: cloud1,
+      spawnTime: 5.4,
+      startX: 0,
+      startY: 0,
+      moveToX: 20,
+      moveToY: 20,
+      anchor: "top-left",
+      maxGrowth: 3,
+    },
+    {
+      id: 2,
+      image: cloud2,
+      spawnTime: 5.4,
+      startX: 100,
+      startY: 0,
+      moveToX: 80,
+      moveToY: 20,
+      anchor: "top-right",
+      maxGrowth: 3,
+    },
+    {
+      id: 3,
+      image: cloud3,
+      spawnTime: 5.4,
+      startX: 0,
+      startY: 100,
+      moveToX: 20,
+      moveToY: 80,
+      anchor: "bottom-left",
+      maxGrowth: 3,
+    },
+    {
+      id: 4,
+      image: cloud1,
+      spawnTime: 5.4,
+      startX: 100,
+      startY: 100,
+      moveToX: 80,
+      moveToY: 80,
+      anchor: "bottom-right",
+      maxGrowth: 3,
+    },
+    {
+      id: 5,
+      image: cloud2,
+      spawnTime: 5.4,
+      startX: 50,
+      startY: 50,
+      moveToX: 50,
+      moveToY: 50,
+      anchor: "center",
+      maxGrowth: 3,
+    },
 
-      // Next 3 clouds appear at 7s
-      {
-        id: 6,
-        image: cloudImages[2],
-        spawnTime: 7.0,
-        x: 40,
-        y: 25,
-        scale: 0.5,
-      },
-      {
-        id: 7,
-        image: cloudImages[0],
-        spawnTime: 7.0,
-        x: 60,
-        y: 75,
-        scale: 0.6,
-      },
-      {
-        id: 8,
-        image: cloudImages[1],
-        spawnTime: 7.0,
-        x: 15,
-        y: 50,
-        scale: 0.4,
-      },
-
-      // Last 2 clouds appear at 7.5s
-      {
-        id: 9,
-        image: cloudImages[2],
-        spawnTime: 7.5,
-        x: 85,
-        y: 45,
-        scale: 0.55,
-      },
-      {
-        id: 10,
-        image: cloudImages[0],
-        spawnTime: 7.5,
-        x: 55,
-        y: 20,
-        scale: 0.5,
-      },
-    ];
-  });
+    // Next 3 clouds at 6.5s - rest of space (grow 2x)
+    {
+      id: 6,
+      image: cloud3,
+      spawnTime: 6.5,
+      startX: 50,
+      startY: 15,
+      moveToX: 50,
+      moveToY: 15,
+      anchor: "center",
+      maxGrowth: 2,
+    },
+    {
+      id: 7,
+      image: cloud1,
+      spawnTime: 6.5,
+      startX: 15,
+      startY: 50,
+      moveToX: 15,
+      moveToY: 50,
+      anchor: "center",
+      maxGrowth: 2,
+    },
+    {
+      id: 8,
+      image: cloud2,
+      spawnTime: 6.5,
+      startX: 85,
+      startY: 50,
+      moveToX: 85,
+      moveToY: 50,
+      anchor: "center",
+      maxGrowth: 2,
+    },
+  ];
 
   useEffect(() => {
     let ticking = false;
@@ -116,12 +120,16 @@ function App() {
           const time = progress * 8;
           setVideoTime(time);
 
-          // Update video currentTime
-          if (videoRef.current && videoRef.current.duration) {
-            videoRef.current.currentTime = Math.min(
-              time,
-              videoRef.current.duration
-            );
+          // Throttle video seeking to every 100ms
+          const now = Date.now();
+          if (now - lastVideoUpdateRef.current > 100) {
+            if (videoRef.current && videoRef.current.duration) {
+              videoRef.current.currentTime = Math.min(
+                time,
+                videoRef.current.duration
+              );
+            }
+            lastVideoUpdateRef.current = now;
           }
 
           ticking = false;
@@ -158,23 +166,47 @@ function App() {
           // Calculate how long this cloud has been visible
           const cloudAge = videoTime - cloud.spawnTime;
 
-          // Clouds grow over time (0.5s to reach full size)
-          const growthProgress = Math.min(cloudAge / 0.5, 1);
-          const currentScale = cloud.scale + growthProgress * 1.5;
+          // Clouds grow over time (1.5 seconds to reach max size)
+          const growthProgress = Math.min(cloudAge / 1.5, 1);
+          const currentScale = 1 + growthProgress * (cloud.maxGrowth - 1);
+
+          // Corner clouds move towards middle over 2 seconds
+          const moveProgress = Math.min(cloudAge / 2, 1);
+          const currentX =
+            cloud.startX + (cloud.moveToX - cloud.startX) * moveProgress;
+          const currentY =
+            cloud.startY + (cloud.moveToY - cloud.startY) * moveProgress;
 
           // Opacity fades in quickly
-          const opacity = Math.min(cloudAge / 0.3, 1) * 0.8;
+          const opacity = Math.min(cloudAge / 0.5, 1);
+
+          // Get transform based on anchor point
+          const getTransform = (anchor, scale) => {
+            switch (anchor) {
+              case "top-left":
+                return `translate(0%, 0%) scale(${scale})`;
+              case "top-right":
+                return `translate(-100%, 0%) scale(${scale})`;
+              case "bottom-left":
+                return `translate(0%, -100%) scale(${scale})`;
+              case "bottom-right":
+                return `translate(-100%, -100%) scale(${scale})`;
+              case "center":
+              default:
+                return `translate(-50%, -50%) scale(${scale})`;
+            }
+          };
 
           return (
             <img
               key={cloud.id}
               src={cloud.image}
               alt="cloud"
-              className="cloud"
+              className="cloud-full"
               style={{
-                left: `${cloud.x}%`,
-                top: `${cloud.y}%`,
-                transform: `translate(-50%, -50%) scale(${currentScale})`,
+                left: `${currentX}%`,
+                top: `${currentY}%`,
+                transform: getTransform(cloud.anchor, currentScale),
                 opacity: opacity,
               }}
             />
@@ -194,8 +226,8 @@ function App() {
         )}
       </div>
 
-      {/* Progress indicator */}
-      <div className="scroll-indicator">
+      {/* Progress indicator - REMOVED */}
+      {/* <div className="scroll-indicator">
         <div className="time-display">{videoTime.toFixed(1)}s</div>
         <div className="scroll-progress">
           <div
@@ -203,7 +235,7 @@ function App() {
             style={{ height: `${(videoTime / 8) * 100}%` }}
           />
         </div>
-      </div>
+      </div> */}
 
       {/* Scroll spacer */}
       <div className="scroll-spacer" />

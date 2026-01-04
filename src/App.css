@@ -75,6 +75,18 @@ body {
   transition: none;
 }
 
+.cloud-full {
+  position: absolute;
+  width: 33.33vw;
+  height: 50vh;
+  object-fit: contain;
+  pointer-events: none;
+  will-change: transform;
+  transition: none;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
 /* Cloud Text */
 .cloud-text-container {
   position: absolute;
